@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../App'; // ✅ ดึง hook ที่สร้างไว้ใน App.tsx
+import { useAuth } from '../App'; 
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth(); // ✅ ใช้ login จาก context
+  const { login } = useAuth(); 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -21,7 +21,7 @@ export default function Login() {
 
     try {
       setLoading(true);
-      await login(email, password); // ✅ call API จริง
+      await login(email, password);
       navigate('/boards');
     } catch (err: any) {
       setError(err.message || 'เข้าสู่ระบบไม่สำเร็จ');

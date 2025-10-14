@@ -19,7 +19,7 @@ function saveBoards(boards: Board[]) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(boards));
 }
 
-// แปลงข้อมูลจาก server ให้เข้ากับ type ฝั่ง UI
+// แปลงข้อมูลจาก server ให้เข้ากับ UI
 function adaptServerBoard(sb: any): Board {
   return {
     id: String(sb.id),
@@ -39,7 +39,7 @@ export default function BoardList() {
     React.useEffect(() => {
     let mounted = true;
     (async () => {
-      if (!user?.id) {            // ยังไม่รู้ว่าใคร → ว่างไว้ก่อน
+      if (!user?.id) {         
         setBoards([]);
         return;
       }
@@ -47,9 +47,9 @@ export default function BoardList() {
         setLoading(true);
         setError(null);
 
-        const serverBoards = await api.boards.list(); // ดึงทั้งหมด
+        const serverBoards = await api.boards.list();
         const mine = serverBoards
-          .filter((b: any) => Number(b.owner_id) === Number(user.id)); // ✅ กรองเฉพาะของเรา
+          .filter((b: any) => Number(b.owner_id) === Number(user.id));
 
         if (mounted) setBoards(mine.map(adaptServerBoard));
       } catch (err: any) {
@@ -59,7 +59,7 @@ export default function BoardList() {
       }
     })();
     return () => { mounted = false; };
-  }, [api.boards, user?.id]); // ✅ ผูกกับ user.id ด้วย
+  }, [api.boards, user?.id]);
 
 
   React.useEffect(() => {

@@ -8,7 +8,6 @@ export default function TaskCard({ task }: { task: Task }) {
 
   const toggleDone = () => {
     setDone((d) => !d);
-    // ที่หลังค่อยเชื่อม api.tasks.update(task.id, { status: done ? 'active' : 'done' })
   };
 
   return (

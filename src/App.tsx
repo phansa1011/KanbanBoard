@@ -7,10 +7,8 @@ import BoardList from './pages/BoardList';
 import KanbanBoard from './pages/KanbanBoard';
 import './index.css';
 
-/** -------------------- Config -------------------- */
 const API_BASE = import.meta.env.VITE_API_BASE?.replace(/\/$/, '') || 'http://localhost:5000';
 
-/** -------------------- API helper -------------------- */
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 async function apiFetch<T>(
@@ -43,7 +41,7 @@ async function apiFetch<T>(
   }
 }
 
-/** -------------------- Auth -------------------- */
+//Auth
 type User = { id: number; email: string; name?: string | null };
 
 type AuthState = {
@@ -81,7 +79,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    // ฝั่ง server ควรส่ง { token, user }
     const data = await apiFetch<{ token: string; user: User }>('/api/login', {
       method: 'POST',
       body: { email, password },
@@ -92,9 +89,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = useCallback(
     async (payload: { email: string; password: string; name?: string }) => {
-      // สมัครผู้ใช้ใหม่ (ถ้าเซิร์ฟเวอร์ส่ง token มาก็ไม่ต้องใช้)
       await apiFetch('/api/users', { method: 'POST', body: payload });
-      // ไม่ auto-login แล้ว
     },
     []
   );
@@ -111,7 +106,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-/** -------------------- API (CRUD หลัก) -------------------- */
+//API CRUD
 type Board = { id: number; title: string; description?: string | null; owner_id: number; privacy: 'private' | 'public' };
 type Column = { id: number; board_id: number; title: string; position: number };
 type Task = { id: number; board_id: number; column_id: number; title: string; description?: string | null; position: number; created_by?: number | null; status: string; archived: number };
@@ -192,14 +187,13 @@ function ApiProvider({ children }: { children: React.ReactNode }) {
   return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>;
 }
 
-/** -------------------- Guards -------------------- */
 function RequireAuth({ children }: { children: ReactElement }) {
   const { isAuth } = useAuth();
   if (!isAuth) return <Navigate to="/login" replace />;
   return children;
 }
 
-/** -------------------- App -------------------- */
+// APP
 export default function App() {
   return (
     <AuthProvider>

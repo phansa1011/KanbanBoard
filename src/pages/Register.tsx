@@ -24,7 +24,7 @@ export default function Register() {
         try {
             setLoading(true);
             await register({ email, password, name });
-            navigate('/login');   // ✅ ไปหน้า Login หลังสมัครเสร็จ
+            navigate('/login');
         } catch (err: any) {
             setError(err?.message || 'สมัครสมาชิกไม่สำเร็จ');
         } finally {
